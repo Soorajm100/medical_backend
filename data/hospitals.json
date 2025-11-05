@@ -1,0 +1,102 @@
+[
+  {
+    "hospital_id": 1,
+    "name": "City Care Hospital",
+    "email": "contact@citycare.com",
+    "latitude": 12.9716,
+    "longitude": 77.5946,
+    "address": "MG Road, Bangalore",
+    "ambulance_id": "AMB001-A",
+    "ambulance_engaged": false
+  },
+  {
+    "hospital_id": 1,
+    "name": "City Care Hospital",
+    "email": "contact@citycare.com",
+    "latitude": 12.9716,
+    "longitude": 77.5946,
+    "address": "MG Road, Bangalore",
+    "ambulance_id": "AMB001-B",
+    "ambulance_engaged": true
+  },
+  {
+    "hospital_id": 2,
+    "name": "Coastal Health Clinic",
+    "email": "info@coastalhealth.com",
+    "latitude": 12.9141,
+    "longitude": 74.856,
+    "address": "Hampankatta, Mangalore",
+    "ambulance_id": "AMB002-A",
+    "ambulance_engaged": true
+  },
+  {
+    "hospital_id": 2,
+    "name": "Coastal Health Clinic",
+    "email": "info@coastalhealth.com",
+    "latitude": 12.9141,
+    "longitude": 74.856,
+    "address": "Hampankatta, Mangalore",
+    "ambulance_id": "AMB002-B",
+    "ambulance_engaged": true
+  },
+  {
+    "hospital_id": 3,
+    "name": "Global Medical Center",
+    "email": "helpdesk@globalmed.com",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "address": "Mount Road, Chennai",
+    "ambulance_id": "AMB003-A",
+    "ambulance_engaged": true
+  },
+  {
+    "hospital_id": 3,
+    "name": "Global Medical Center",
+    "email": "helpdesk@globalmed.com",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "address": "Mount Road, Chennai",
+    "ambulance_id": "AMB003-B",
+    "ambulance_engaged": true
+  },
+  {
+    "hospital_id": 4,
+    "name": "Lotus Hospital",
+    "email": "emergency@lotushosp.com",
+    "latitude": 15.3173,
+    "longitude": 75.7139,
+    "address": "Hubli Main Road, Dharwad",
+    "ambulance_id": "AMB004-A",
+    "ambulance_engaged": true
+  },
+  {
+    "hospital_id": 4,
+    "name": "Lotus Hospital",
+    "email": "emergency@lotushosp.com",
+    "latitude": 15.3173,
+    "longitude": 75.7139,
+    "address": "Hubli Main Road, Dharwad",
+    "ambulance_id": "AMB004-B",
+    "ambulance_engaged": true
+  },
+  {
+    "hospital_id": 5,
+    "name": "Sunrise Multispeciality",
+    "email": "care@sunrise.com",
+    "latitude": 19.076,
+    "longitude": 72.8777,
+    "address": "Bandra, Mumbai",
+    "ambulance_id": "AMB005-A",
+    "ambulance_engaged": true
+  },
+  {
+    "hospital_id": 5,
+    "name": "Sunrise Multispeciality",
+    "email": "care@sunrise.com",
+    "latitude": 19.076,
+    "longitude": 72.8777,
+    "address": "Bandra, Mumbai",
+    "ambulance_id": "AMB005-B",
+    "ambulance_engaged": false
+  }
+]

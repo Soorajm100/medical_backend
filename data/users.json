@@ -1,0 +1,51 @@
+[
+  {
+    "user_id": 1730451001001,
+    "name": "Arjun Sharma",
+    "email": "arjun@example.com",
+    "password": "123456489",
+    "role": "user"
+  },
+  {
+    "user_id": 1730451001002,
+    "name": "Priya Nair",
+    "email": "priya@example.com",
+    "password": "$2a$10$FZ5Gq6bOUPpQHdBP3hCvqeE2PCG6ZLLGAlV1yAlPXcCCk46MgLXcO",
+    "role": "user"
+  },
+  {
+    "user_id": 1730451001003,
+    "name": "Ravi Kumar",
+    "email": "ravi@example.com",
+    "password": "$2a$10$NE4B5M/GuH1pW7tL9fOQquhMZz.q3jpnL.Mxxu93BqFVuUvMhrDse",
+    "role": "admin"
+  },
+  {
+    "user_id": 1730451001004,
+    "name": "Sneha Patil",
+    "email": "sneha@example.com",
+    "password": "$2a$10$OQgl5mLOxMQ2Xb96yH/7ReRL8HAT0vNUm1AfIyg8RcCBME9nXyMqC",
+    "role": "user"
+  },
+  {
+    "user_id": 1762021062916,
+    "name": "Sneha Patil y",
+    "email": "sneha@example1256.com",
+    "password": "$2b$10$MIVx6dC78WnIfK09SfVBDePeCMRo.IJX85p7FfIQ8Zd5i/x4xULXe"
+  },
+  {
+    "user_id": 1762091934633,
+    "name": "jailesh",
+    "email": "soorajm825@gmail.com",
+    "password": "$2b$10$/mvsNrP3nzgzFMfKFdPf0epz5/UaTYq4QJO1Hcuwf9ziEfBwFnIDu",
+    "role": "user"
+  },
+  {
+    "user_id": 1762153373169,
+    "name": "Ramesh",
+    "email": "ramesh123@sample.com",
+    "password": "$2b$10$NJWeEWCMTUAO/PDRoBpnveiSc797A7Bt/OXmuu7MvouGT3/CFGAui",
+    "role": "ambulance-driver" , 
+    "ambulance_id": "AMB004-B"
+  }
+]
