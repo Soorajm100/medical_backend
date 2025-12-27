@@ -1,6 +1,7 @@
 // controllers/sseController.js
 import fs from "fs";
 import path from  'path'
+import { getJSON } from "../utils/redisClient.js";
 
 // Store active SSE connections
 // Map<incident_id, Set<response_objects>>
@@ -68,12 +69,20 @@ const streamTracking = (req, res) => {
  */
 async function sendInitialTrackingData(incident_id, res) {
   try {
-    const filePath = path.join(__dirname, '../data/incidents.json');
-    const data = await fs.readFile(filePath, 'utf8');
-    const incidents = JSON.parse(data);
-    
+    // Try cache first
+    let incidents = null;
+    try {
+      incidents = await getJSON('incidents_all');
+    } catch (err) {}
+
+    if (!incidents) {
+      const filePath = path.join(__dirname, '../data/incidents.json');
+      const data = await fs.readFile(filePath, 'utf8');
+      incidents = JSON.parse(data);
+    }
+
     const incident = incidents.find(inc => inc.incident_id === incident_id);
-    
+
     if (incident) {
       const trackingData = {
         type: 'tracking_update',
@@ -89,7 +98,7 @@ async function sendInitialTrackingData(incident_id, res) {
           last_updated: incident.current_ambulance_location?.last_updated || incident.created_at
         }
       };
-      
+
       res.write(`data: ${JSON.stringify(trackingData)}\n\n`);
       console.log(`📤 Sent initial data for incident ${incident_id}`);
     }

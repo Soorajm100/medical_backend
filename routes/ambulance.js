@@ -6,7 +6,7 @@ import {getAmbulanceIncidents , acceptIncident ,updateLocation , updateStatus , 
 // Ambulance Driver Routes
 router.get('/incidents/:ambulance_id',getAmbulanceIncidents);
 router.get('/getincident/:incident_id',getInciFromID);
-router.get('/afteraccept',AfterAccept);
+router.get('/afteraccept/:ambulance_id',AfterAccept);
 router.post('/accept-incident',acceptIncident);
 // router.post('/update-location',updateLocation);
 router.post('/update-status',updateStatus);

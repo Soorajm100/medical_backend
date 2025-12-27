@@ -3,6 +3,7 @@ import path from "path";
 import bcrypt from  "bcryptjs"
 import jwt from "jsonwebtoken"; 
 import dotenv from "dotenv"; 
+import { getJSON, setJSON, delKey } from "../utils/redisClient.js";
 
 dotenv.config(); 
 
@@ -13,18 +14,28 @@ console.log("the __dirname is", __dirname);
 
 const userFile= path.join(__dirname , "data", "users.json"); 
 
-const readUsers = ()=>{
+const readUsers = async ()=>{
+    try {
+      const cached = await getJSON('users_all');
+      if (cached && Array.isArray(cached)) return cached;
+    } catch (err) {}
+
     if(!fs.existsSync((userFile)))return []; 
 
     const data = fs.readFileSync(userFile, "utf-8");
-    return JSON.parse(data);
+    const parsed = JSON.parse(data);
+
+    try { await setJSON('users_all', parsed, 300); } catch (err) {}
+
+    return parsed;
 }
 
-const writeUsers = (data)=>{
+const writeUsers = async (data)=>{
     fs.writeFileSync(userFile, JSON.stringify(data, null, 2));
+    try { await delKey('users_all'); } catch (err) {}
 }
 
-export const registerUser = (req , res)=>{
+export const registerUser = async (req , res)=>{
 
     const  data = req.body; 
 
@@ -33,7 +44,7 @@ export const registerUser = (req , res)=>{
     const password = data?.password;
     const role = data?.role
 
-    const users = readUsers();
+    const users = await readUsers();
 
     const existingUser = users.find((user)=> user.email === email);
 
@@ -53,7 +64,7 @@ export const registerUser = (req , res)=>{
     }
 
     users.push(newUser); 
-    writeUsers (users) ;
+    await writeUsers(users);
 
     return res.status(201).json({
         "message"  :"Users registration  done successfully", 
@@ -61,9 +72,9 @@ export const registerUser = (req , res)=>{
     })
 }
 
-export const loginUser = (req, res) => {
+export const loginUser = async (req, res) => {
     const { email, password } = req.body;
-    const users = readUsers();
+    const users = await readUsers();
 
     const user = users.find(u => u.email === email);
     if (!user) {

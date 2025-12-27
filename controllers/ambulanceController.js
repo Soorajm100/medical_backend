@@ -2,6 +2,7 @@
 import fs from "fs";
 import path from  'path'
 import {broadcastToIncident} from './sseController.js'
+import { getJSON, setJSON, delKey } from "../utils/redisClient.js";
 
 
 
@@ -15,9 +16,31 @@ const hospitalFile = path.join(__dirname, "data", "hospitals.json");
 // Helper functions to read/write JSON files
 const readJSONFile = async (filename) => {
   try {
+    // Check appropriate cache key for common files
+    if (filename === incidentFile) {
+      try {
+        const cached = await getJSON('incidents_all');
+        if (cached && Array.isArray(cached)) return cached;
+      } catch (err) {}
+    }
+    if (filename === hospitalFile) {
+      try {
+        const cached = await getJSON('hospitals_all');
+        if (cached && Array.isArray(cached)) return cached;
+      } catch (err) {}
+    }
+
     const filePath = filename;
     const data = await fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(data);
+    const parsed = JSON.parse(data);
+
+    // Prime relevant cache
+    try {
+      if (filename === incidentFile) await setJSON('incidents_all', parsed, 60);
+      if (filename === hospitalFile) await setJSON('hospitals_all', parsed, 300);
+    } catch (err) {}
+
+    return parsed;
   } catch (error) {
     console.error(`Error reading ${filename}:`, error);
     return [];
@@ -28,6 +51,17 @@ const writeJSONFile = async (filename, data) => {
   try {
     const filePath = filename ; 
     await fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+
+    // Invalidate cache for files we manage
+    try {
+      if (filename === incidentFile) {
+        await delKey('incidents_all');
+      }
+      if (filename === hospitalFile) {
+        await delKey('hospitals_all');
+      }
+    } catch (err) {}
+
     return true;
   } catch (error) {
     console.error(`Error writing ${filename}:`, error);
@@ -46,12 +80,17 @@ export const getAmbulanceIncidents = async (req, res) => {
     const { ambulance_id } = req.params;
     
     const incidents = await readJSONFile(incidentFile);
+    const inciArray = [incidents] ; 
+
+
+    console.log(incidents , 'the incidents for  ambulance in  the getAmbulnace function ')
     
     // Filter incidents for this ambulance that are not completed
     const ambulanceIncidents = incidents.filter(
       incident => 
         incident.ambulance_id === ambulance_id && 
-        incident.status !== 'Completed' && 
+        incident.incident_accepted===false &&
+        incident.incident_completed !== true &&
         incident.status !== 'Cancelled'
     );
     
@@ -89,6 +128,7 @@ export const acceptIncident = async (req, res) => {
     } = req.body;
     
     const incidents = await readJSONFile(incidentFile);
+    const inciArr = [incidents]
     
     // Find the incident
     const incidentIndex = incidents.findIndex(
@@ -119,6 +159,7 @@ export const acceptIncident = async (req, res) => {
       ...incident,
       ambulance_driver_name,
       ambulance_driver_phone,
+      incident_accepted: true,
       status: 'Dispatched',
       accepted_at,
       status_history: [
@@ -290,6 +331,8 @@ export const updateStatus = async (req, res) => {
     }
     
     const incidents = await readJSONFile(incidentFile);
+
+    const inciArr = [incidents]
     
     const incidentIndex = incidents.findIndex(
       inc => inc.incident_id === incident_id
@@ -333,7 +376,7 @@ export const updateStatus = async (req, res) => {
     }
     
     incidents[incidentIndex] = updatedIncident;
-    
+
     await writeJSONFile(incidentFile, incidents);
     
     // *** BROADCAST STATUS UPDATE ***
@@ -349,7 +392,7 @@ export const updateStatus = async (req, res) => {
     
     // If completed, release the ambulance
     if (new_status === 'Completed') {
-      await releaseAmbulance(incident.ambulance_id);
+      await releaseAmbulance(incident);
     }
     
     return res.status(200).json({
@@ -376,12 +419,13 @@ export const getActiveIncident = async (req, res) => {
     const { ambulance_driver_id } = req.params;
     
     const incidents = await readJSONFile(incidentFile);
-    
+    const inciArr = [incidents] ;
     // Find active incident for this driver
     const activeIncident = incidents.find(
       inc => 
         inc.ambulance_driver_id === parseInt(ambulance_driver_id) &&
-        inc.status !== 'Completed' &&
+        inc.incident_accepted===false &&
+        inc.incident_completed !== true &&
         inc.status !== 'Cancelled' 
     );
     
@@ -410,13 +454,17 @@ export const getActiveIncident = async (req, res) => {
 export const AfterAccept = async (req , res) => {
   try {
     const incidents = await readJSONFile(incidentFile);
+    const ambulance_id = req.params.ambulance_id ;
+
+
 
     console.log(incidents , 'the incidents after readinf')
-    
+    const inciArray = [incidents] ; 
     // Find active incident for this driver
-    const activeIncident = [incidents.find(
+    const activeIncident = [incidents?.find(
       inc => 
-        inc.incident_accepted === true 
+        inc.incident_accepted === true &&
+        inc.ambulance_id === ambulance_id
     )];
 
     
@@ -448,6 +496,8 @@ export const getInciFromID = async (req , res) => {
 
     const {incident_id} = req.params ; 
     const incidents = await readJSONFile(incidentFile);
+
+    const inciArr = [incidents] ;
 
    
     // Find active incident for this driver
@@ -631,17 +681,32 @@ function toRad(degrees) {
 /**
  * Release ambulance after incident completion
  */
-async function releaseAmbulance(ambulance_id) {
+async function releaseAmbulance(incident) {
   try {
     const hospitals = await readJSONFile(hospitalFile);
-    
+    const incidents = await readJSONFile(incidentFile);
+
     const hospitalIndex = hospitals.findIndex(
-      h => h.ambulance_id === ambulance_id
+      h => h.ambulance_id === incident.ambulance_id
     );
-    
+
+    const incidentIndex = incidents.findIndex(
+      h => h.incident_id === incident.incident_id
+    );
+
+    // Release ambulance in hospitals file if found
     if (hospitalIndex !== -1) {
       hospitals[hospitalIndex].ambulance_engaged = false;
-      await writeJSONFile(hospitalFile, hospitals);
+      try { await writeJSONFile(hospitalFile, hospitals); } catch (err) {}
+    }
+
+    // Update incident flags and write the incidents array back (do NOT write a single object)
+    if (incidentIndex !== -1) {
+      incidents[incidentIndex].incident_accepted = false;
+      incidents[incidentIndex].incident_completed = true;
+      try { await writeJSONFile(incidentFile, incidents); } catch (err) {}
+    } else {
+      console.warn('releaseAmbulance: incident not found', incident?.incident_id);
     }
   } catch (error) {
     console.error('Error releasing ambulance:', error);

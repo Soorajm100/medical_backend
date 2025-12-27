@@ -1,27 +1,63 @@
 import fs from "fs";
 import path from "path";
 import { sendEmergencyEmail } from "../utils/emailService.js";
+import { getJSON, setJSON, delKey } from "../utils/redisClient.js";
+
 
 const __dirname = path.resolve();
 const hospitalFile = path.join(__dirname, "data", "hospitals.json");
 const incidentFile = path.join(__dirname, "data", "incidents.json");
 
-const readHospitals = () => {
+const readHospitals = async () => {
+  // Try cache first
+  try {
+    const cached = await getJSON('hospitals_all');
+    if (cached && Array.isArray(cached)) return cached;
+  } catch (err) {
+    // ignore cache errors
+  }
+
   if (!fs.existsSync(hospitalFile)) return [];
-  return JSON.parse(fs.readFileSync(hospitalFile, "utf-8"));
+  const data = JSON.parse(fs.readFileSync(hospitalFile, "utf-8"));
+
+  // Prime cache (short TTL)
+  try {
+    await setJSON('hospitals_all', data, 300);
+  } catch (err) {}
+
+  return data;
 };
 
-const saveHospitals = (data) => {
+const saveHospitals = async (data) => {
   fs.writeFileSync(hospitalFile, JSON.stringify(data, null, 2));
+  // Invalidate cache
+  try {
+    await delKey('hospitals_all');
+  } catch (err) {}
 };
 
-const readIncidents = () => {
+const readIncidents = async () => {
+  // Try cache first
+  try {
+    const cached = await getJSON('incidents_all');
+    if (cached && Array.isArray(cached)) return cached;
+  } catch (err) {}
+
   if (!fs.existsSync(incidentFile)) return [];
-  return JSON.parse(fs.readFileSync(incidentFile, "utf-8"));
+  const data = JSON.parse(fs.readFileSync(incidentFile, "utf-8"));
+
+  try {
+    await setJSON('incidents_all', data, 60);
+  } catch (err) {}
+
+  return data;
 };
 
-const saveIncidents = (data) => {
+const saveIncidents = async (data) => {
   fs.writeFileSync(incidentFile, JSON.stringify(data, null, 2));
+  try {
+    await delKey('incidents_all');
+  } catch (err) {}
 };
 
 const getDistance = (lat1, lon1, lat2, lon2) => {
@@ -49,7 +85,7 @@ export const emergenGencyTrigger = async (req, res) => {
       });
     }
 
-    const hospitals = readHospitals();
+    const hospitals = await readHospitals();
 
     if (hospitals.length === 0) {
       return res.status(404).json({ message: "No hospitals found", success: false });
@@ -82,7 +118,9 @@ export const emergenGencyTrigger = async (req, res) => {
 
     const eta = Math.floor(Math.random() * 10) + 5; // 5-15 mins
 
-    const incidents = readIncidents();
+    const incidents = await readIncidents();
+
+    const inciArr = [incidents];
 
     const newIncident = {
       incident_id: `INC-${Date.now()}`,
@@ -96,12 +134,15 @@ export const emergenGencyTrigger = async (req, res) => {
       location: { latitude, longitude },
       distance_km: availableAmbulance.distance.toFixed(2),
       eta_minutes: eta,
-      status: "En Route", // Possible statuses: En Route → Arrived → Completed
+      status: "Dispatched", // Possible statuses: En Route → Arrived → Completed
+      incident_accepted: true,
       created_at: new Date().toISOString(),
     };
 
     incidents.push(newIncident);
-    saveIncidents(incidents);
+    await saveIncidents(incidents);
+    // Invalidate per-user cache (if any)
+    try { await delKey(`incidents_user_${user_id}`); } catch (err) {}
 
     // Prepare email
     const subject = `🚨 Emergency Alert: ${emergencyType}`;

@@ -1,25 +1,6 @@
 [
   {
-    "incident_id": "INC-1762100115680",
-    "user_name": "jailesh",
-    "user_email": "soorajm825@gmail.com",
-    "user_id": 1762091934633,
-    "emergency_type": "Generic emergency  type",
-    "hospital_name": "Lotus Hospital",
-    "hospital_email": "emergency@lotushosp.com",
-    "ambulance_id": "AMB004-A",
-    "incident_accepted": false,
-    "location": {
-      "latitude": 13.473056,
-      "longitude": 74.7146742
-    },
-    "distance_km": "231.59",
-    "eta_minutes": 9,
-    "status": "En Route",
-    "created_at": "2025-11-02T16:15:15.680Z"
-  },
-  {
-    "incident_id": "INC-1762102747542",
+    "incident_id": "INC-1766861466538",
     "user_name": "jailesh",
     "user_email": "soorajm825@gmail.com",
     "user_id": 1762091934633,
@@ -27,46 +8,141 @@
     "hospital_name": "Lotus Hospital",
     "hospital_email": "emergency@lotushosp.com",
     "ambulance_id": "AMB004-B",
-    "incident_accepted": true,
     "location": {
-      "latitude": 13.473056,
-      "longitude": 74.7146742
+      "latitude": 13.4736075,
+      "longitude": 74.7161374
     },
-    "distance_km": "231.59",
-    "eta_minutes": 6,
-    "status": "Patient Loaded",
-    "created_at": "2025-11-02T16:59:07.542Z",
+    "distance_km": "231.46",
+    "eta_minutes": 12,
+    "status": "Completed",
+    "incident_accepted": false,
+    "incident_completed": true,
+    "created_at": "2025-12-27T18:51:06.538Z",
     "status_history": [
       {
-        "status": "Dispatched",
-        "timestamp": "2025-11-03T15:45:27.965Z",
-        "updated_by": "ambulance_driver"
-      },
-      {
         "status": "En Route",
-        "timestamp": "2025-11-03T17:40:21.104Z",
+        "timestamp": "2025-12-27T18:51:45.913Z",
         "updated_by": "ambulance_driver",
         "notes": ""
       },
       {
         "status": "Arrived at Scene",
-        "timestamp": "2025-11-03T17:40:45.950Z",
+        "timestamp": "2025-12-27T18:51:47.453Z",
         "updated_by": "ambulance_driver",
         "notes": ""
       },
       {
         "status": "Patient Loaded",
-        "timestamp": "2025-11-03T17:41:57.534Z",
+        "timestamp": "2025-12-27T18:51:48.888Z",
+        "updated_by": "ambulance_driver",
+        "notes": ""
+      },
+      {
+        "status": "En Route to Hospital",
+        "timestamp": "2025-12-27T18:51:50.262Z",
+        "updated_by": "ambulance_driver",
+        "notes": ""
+      },
+      {
+        "status": "Arrived at Hospital",
+        "timestamp": "2025-12-27T18:51:51.789Z",
+        "updated_by": "ambulance_driver",
+        "notes": ""
+      },
+      {
+        "status": "Completed",
+        "timestamp": "2025-12-27T18:54:49.362Z",
         "updated_by": "ambulance_driver",
         "notes": ""
       }
     ],
-    "accepted_at": "2025-11-03T15:45:27.965Z",
-    "arrived_at_scene_at": "2025-11-03T17:40:45.950Z",
-    "patient_loaded_at": "2025-11-03T17:41:57.534Z",
-    "arrived_at_hospital_at": null,
-    "completed_at": null,
-    "ambulance_driver_id": 1762153373169,
-    "ambulance_driver_name": "Ramesh"
+    "arrived_at_scene_at": "2025-12-27T18:51:47.453Z",
+    "patient_loaded_at": "2025-12-27T18:51:48.888Z",
+    "arrived_at_hospital_at": "2025-12-27T18:51:51.789Z",
+    "completed_at": "2025-12-27T18:54:49.362Z"
+  },
+  {
+    "incident_id": "INC-1766861704125",
+    "user_name": "jailesh",
+    "user_email": "soorajm825@gmail.com",
+    "user_id": 1762091934633,
+    "emergency_type": "Generic emergency  type",
+    "hospital_name": "Lotus Hospital",
+    "hospital_email": "emergency@lotushosp.com",
+    "incident_completed": true,
+    "ambulance_id": "AMB004-B",
+    "location": {
+      "latitude": 13.4736075,
+      "longitude": 74.7161374
+    },
+    "distance_km": "231.46",
+    "eta_minutes": 8,
+    "status": "Completed",
+    "incident_accepted": false,
+    "created_at": "2025-12-27T18:55:04.125Z",
+    "ambulance_driver_name": "Ramesh",
+    "accepted_at": "2025-12-27T19:00:29.310Z",
+    "status_history": [
+      {
+        "status": "Dispatched",
+        "timestamp": "2025-12-27T18:56:34.778Z",
+        "updated_by": "ambulance_driver"
+      },
+      {
+        "status": "Dispatched",
+        "timestamp": "2025-12-27T18:57:14.994Z",
+        "updated_by": "ambulance_driver"
+      },
+      {
+        "status": "Dispatched",
+        "timestamp": "2025-12-27T18:57:47.896Z",
+        "updated_by": "ambulance_driver"
+      },
+      {
+        "status": "Dispatched",
+        "timestamp": "2025-12-27T19:00:29.310Z",
+        "updated_by": "ambulance_driver"
+      },
+      {
+        "status": "En Route",
+        "timestamp": "2025-12-27T19:00:44.906Z",
+        "updated_by": "ambulance_driver",
+        "notes": ""
+      },
+      {
+        "status": "Arrived at Scene",
+        "timestamp": "2025-12-27T19:00:46.548Z",
+        "updated_by": "ambulance_driver",
+        "notes": ""
+      },
+      {
+        "status": "Patient Loaded",
+        "timestamp": "2025-12-27T19:00:47.943Z",
+        "updated_by": "ambulance_driver",
+        "notes": ""
+      },
+      {
+        "status": "En Route to Hospital",
+        "timestamp": "2025-12-27T19:00:49.306Z",
+        "updated_by": "ambulance_driver",
+        "notes": ""
+      },
+      {
+        "status": "Arrived at Hospital",
+        "timestamp": "2025-12-27T19:00:50.589Z",
+        "updated_by": "ambulance_driver",
+        "notes": ""
+      },
+      {
+        "status": "Completed",
+        "timestamp": "2025-12-27T19:00:51.924Z",
+        "updated_by": "ambulance_driver",
+        "notes": ""
+      }
+    ],
+    "arrived_at_scene_at": "2025-12-27T19:00:46.548Z",
+    "patient_loaded_at": "2025-12-27T19:00:47.943Z",
+    "arrived_at_hospital_at": "2025-12-27T19:00:50.589Z",
+    "completed_at": "2025-12-27T19:00:51.924Z"
   }
 ]
