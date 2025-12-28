@@ -193,17 +193,6 @@ curl -X POST http://localhost:5000/api/admin/add-hospital \
 
 ---
 
-## Screenshots / Assets 🖼️
-Add front-end screenshots to `docs/images/` and reference them here. Example:
-
-```markdown
-![Login screen](docs/images/login.png)
-![Admin hospitals list](docs/images/admin-hospitals.png)
-```
-
-(Placeholders included so your README shows nicely on GitHub)
-
----
 
 ## Contributing 🤝
 Contributions are welcome. Please open issues for bugs or feature requests and submit PRs with tests where possible.
