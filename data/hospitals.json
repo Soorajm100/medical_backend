@@ -98,5 +98,15 @@
     "address": "Bandra, Mumbai",
     "ambulance_id": "AMB005-B",
     "ambulance_engaged": false
+  },
+  {
+    "hospital_id": 6,
+    "name": "Carelon",
+    "email": "carelonsample@sample.com",
+    "latitude": 13.4790399,
+    "longitude": 74.7044425,
+    "address": "PANCHAVATI NIALAYA MABUKALA",
+    "ambulance_id": "AMB-2025",
+    "ambulance_engaged": true
   }
 ]

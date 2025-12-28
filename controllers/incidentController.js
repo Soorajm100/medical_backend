@@ -6,13 +6,11 @@ import dotenv from "dotenv";
 import { getJSON, setJSON, delKey } from "../utils/redisClient.js";
 
 dotenv.config(); 
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const __dirname = path.resolve(); 
-
-console.log("the __dirname is", __dirname);
-
-
-const incidentFile= path.join(__dirname , "data", "incidents.json"); 
+const incidentFile= path.join(__dirname , "..", "data", "incidents.json"); 
 
 
 
@@ -47,6 +45,8 @@ export const IncidentList = async (req, res) => {
   try {
     const cached = await getJSON(`incidents_user_${user_id}`);
     if (cached && Array.isArray(cached)) {
+
+
       return res.status(200).send({ message: "Incidents list returned successfully", success: true, incident_list: cached });
     }
   } catch (err) {}

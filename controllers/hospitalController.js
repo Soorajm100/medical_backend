@@ -2,11 +2,11 @@ import fs from "fs";
 import path from "path";
 import { sendEmergencyEmail } from "../utils/emailService.js";
 import { getJSON, setJSON, delKey } from "../utils/redisClient.js";
-
-
-const __dirname = path.resolve();
-const hospitalFile = path.join(__dirname, "data", "hospitals.json");
-const incidentFile = path.join(__dirname, "data", "incidents.json");
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const hospitalFile = path.join(__dirname, "..", "data", "hospitals.json");
+const incidentFile = path.join(__dirname, "..", "data", "incidents.json");
 
 const readHospitals = async () => {
   // Try cache first
@@ -135,7 +135,8 @@ export const emergenGencyTrigger = async (req, res) => {
       distance_km: availableAmbulance.distance.toFixed(2),
       eta_minutes: eta,
       status: "Dispatched", // Possible statuses: En Route → Arrived → Completed
-      incident_accepted: true,
+      incident_accepted: false,
+      incident_completed: false,
       created_at: new Date().toISOString(),
     };
 

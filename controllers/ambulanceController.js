@@ -6,12 +6,12 @@ import { getJSON, setJSON, delKey } from "../utils/redisClient.js";
 
 
 
-const __dirname = path.resolve(); 
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-console.log("the __dirname is", __dirname);
-
-const incidentFile= path.join(__dirname , "data", "incidents.json"); 
-const hospitalFile = path.join(__dirname, "data", "hospitals.json");
+const incidentFile= path.join(__dirname , "..", "data", "incidents.json"); 
+const hospitalFile = path.join(__dirname, "..", "data", "hospitals.json");
 
 // Helper functions to read/write JSON files
 const readJSONFile = async (filename) => {

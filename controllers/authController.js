@@ -7,12 +7,11 @@ import { getJSON, setJSON, delKey } from "../utils/redisClient.js";
 
 dotenv.config(); 
 
-const __dirname = path.resolve(); 
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-console.log("the __dirname is", __dirname);
-
-
-const userFile= path.join(__dirname , "data", "users.json"); 
+const userFile= path.join(__dirname , "..", "data", "users.json"); 
 
 const readUsers = async ()=>{
     try {
@@ -114,4 +113,21 @@ export const loginUser = async (req, res) => {
         user_email: user.email,
         mobilenumber: user.mobilenumber
     });
+};
+
+export const verifyToken = async (req, res) => {
+  const authHeader = req.headers.authorization || req.headers.Authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ success: false, message: 'Missing or invalid Authorization header' });
+  }
+
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const users = await readUsers();
+    const user = users.find(u => u.user_id === decoded.id || u.email === decoded.email);
+    return res.status(200).json({ success: true, decoded, user: user ? { user_id: user.user_id, email: user.email, role: user.role } : null });
+  } catch (err) {
+    return res.status(401).json({ success: false, message: 'Token invalid', detail: err.message });
+  }
 };

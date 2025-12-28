@@ -1,12 +1,5 @@
 [
   {
-    "user_id": 1730451001001,
-    "name": "Arjun Sharma",
-    "email": "arjun@example.com",
-    "password": "123456489",
-    "role": "user"
-  },
-  {
     "user_id": 1730451001002,
     "name": "Priya Nair",
     "email": "priya@example.com",
@@ -45,7 +38,30 @@
     "name": "Ramesh",
     "email": "ramesh123@sample.com",
     "password": "$2b$10$NJWeEWCMTUAO/PDRoBpnveiSc797A7Bt/OXmuu7MvouGT3/CFGAui",
-    "role": "ambulance-driver" , 
+    "role": "ambulance-driver",
     "ambulance_id": "AMB004-B"
+  },
+  {
+    "user_id": 1766905312417,
+    "name": "dhanman",
+    "email": "dhanman@sample.com",
+    "password": "$2b$10$VFtBN3Sio1Pa3RVK5O01Uu8gYYu2ss/FiTeEy8et6a4YHzx3MeP5K",
+    "role": "admin"
+  },
+  {
+    "user_id": 1766917164014,
+    "name": "Dharamacharya",
+    "email": "dharamacharya@derive.com",
+    "password": "$2b$10$hLpNbmq1nipylx2kLqHTxuWRIvATBr2JKJv2qn7UP9vtZKZo.mdHe",
+    "role": "admin",
+    "ambulance_id": "AMB-13",
+    "mobilenumber": "13659898"
+  },
+  {
+    "user_id": 1766928790748,
+    "name": "SampleUser",
+    "email": "sample@gmail.com",
+    "password": "$2b$10$jMIVTIOFez.Y/l0pNJgtveWL4HZZVbZAfHDdhX43ZXhOkl9eEliMq",
+    "role": "user"
   }
 ]
