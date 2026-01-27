@@ -77,7 +77,7 @@
     "longitude": 75.7139,
     "address": "Hubli Main Road, Dharwad",
     "ambulance_id": "AMB004-B",
-    "ambulance_engaged": false
+    "ambulance_engaged": true
   },
   {
     "hospital_id": 5,
@@ -97,7 +97,7 @@
     "longitude": 72.8777,
     "address": "Bandra, Mumbai",
     "ambulance_id": "AMB005-B",
-    "ambulance_engaged": false
+    "ambulance_engaged": true
   },
   {
     "hospital_id": 6,
